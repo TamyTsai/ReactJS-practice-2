@@ -250,17 +250,56 @@ function App() {
   // )
 
   // 邏輯運算子AND &&
-  return (
-    <div className={`c ${true? 'a':'b'}`}>
-      {true && <h1>hello</h1>}
-      {false && <h1>hello</h1>}
-      {undefined && <h1>hello</h1>}
-      {/* 只有兩邊都是true時，邏輯運算才會是true（狹義說法） */}
-      {/* && 左邊的值 為 真值 時，就會回傳 右邊的值，反之則回傳 左邊的值 */}
-      {/* 但JSX會將false與undefined忽略掉，因此在HTML中不會顯示任何東西 */}
-      {/* 所以可以利用&&邏輯運算，來決定 是否 要展示 某元素 */}
-    </div>
-  )
+  // return (
+  //   <div className={`c ${true? 'a':'b'}`}>
+  //     {true && <h1>hello</h1>}
+  //     {false && <h1>hello</h1>}
+  //     {undefined && <h1>hello</h1>}
+  //     {/* 只有兩邊都是true時，邏輯運算才會是true（狹義說法） */}
+  //     {/* && 左邊的值 為 真值 時，就會回傳 右邊的值，反之則回傳 左邊的值 */}
+  //     {/* 但JSX會將false與undefined忽略掉，因此在HTML中不會顯示任何東西 */}
+  //     {/* 所以可以利用&&邏輯運算，來決定 是否 要展示 某元素 */}
+  //   </div>
+  // )
+
+  // props
+  // properties 屬性
+  // 讓你從 父組件 傳遞資料到 子組件
+  // 可以傳好幾個屬性
+  // 還可以傳入 物件 或是 函式
+  // return (
+  //   <>
+  //     <MyComponent a = "Hello world" b = "你好" c = {() => {console.log(123);}}/>
+  //     {/* 這些屬性會被React裝到一個 物件 裡面，並將其傳到 組件定義 裡面 */}
+  //   </>
+  // )
+
+  // 解構賦值 也可以 加上預設值（屬性b被加上 預設值）
+  // return (
+  //   <>
+  //     <MyComponent a = "Hello world" c = {() => {console.log(123);}}/>
+  //   </>
+  // )
+
+  // props也可以用來傳遞 組件
+  // 將 組件 放到 其他 組件 的內容中（這是比較常見的寫法，這種寫法叫composition組合，可以在 不影響 組件功能 的 基礎上，另外再給組件 加上 額外的功能）
+  // 然後React就會將其 賦予到children屬性上
+  // return (
+  //   <>
+  //     <MyComponent>
+  //       <SecondComponent/>
+  //     </MyComponent>
+  //   </>
+  // )
+  // 等同在 開始標籤 中 寫children屬性（）
+  // return (
+  //   <>
+  //     <MyComponent children={<SecondComponent/>}>
+  //     </MyComponent>
+  //   </>
+  // )
+  // 但不一定要使用「children」才能傳遞 組件
+  // 也可以使用任意 屬性名，因為 組件 其實就是 JS物件 而已，所以可以用 一般方式 傳遞 其
 
 
 }
@@ -276,5 +315,80 @@ function App() {
 //   // 打子組件名，按下tab，就會自動在檔案最上面引入所需模組（import ChildComponent from "./ChildComponent"）
 //   // App（根組件）> MyComponent > ChildComponent
 // }
+
+
+// props
+// properties 屬性
+// 讓你從 父組件 傳遞資料到 子組件
+// function MyComponent(props) {
+// // 因為函式定義的 參數名 可以隨便取，所以其實也可以把props取成其他名字，只不過props是大家常用的寫法
+//   console.log(props);
+//   return <div>{props.a}</div>
+// }
+
+// JSX只允許你回傳一個元素，所以以下會出錯
+// function MyComponent(props) {
+//     console.log(props);
+//     return <div>{props.a}</div>
+//     <div>{props.b}</div>
+//   }
+
+// 所以想回傳多個元素時，要加上空標籤，把他們包起來
+// function MyComponent(props) {
+//   console.log(props);
+//   props.c();
+//   return (
+//     <>
+//       <div>{props.a}</div>
+//       <div>{props.b}</div>
+//     </>
+//   )
+// }
+// props的用法就跟 函式的參數 一樣，可傳入 任何類型 的 資料
+
+// 組件 與 HTML元素 的差異
+// 如果在 組件標籤 裡 寫 屬性，該屬性 就會被傳入 組件定義 中
+// HTML 的 屬性 則是 被預先設定好，所以只能按照規範來寫
+
+// 解構賦值
+// 因為props是物件，所以也可以使用 解構賦值，來取用 裡面的資料
+// 「物件」 的 解構賦值，是以 屬性名 來取用資料的，所以 順序 不重要，名字 很重要
+// 故a、b、c可調換，但不能改成其他名字
+// 但「陣列」 的 解構賦值 就相反了，名字 不重要，順序 很重要
+// function MyComponent({a,b,c}) {
+//   c();
+//   return (
+//     <>
+//       <div>{a}</div>
+//       <div>{b}</div>
+//     </>
+//   )
+// }
+
+// 解構賦值 也可以 加上預設值
+// function MyComponent({a,b = '王小明',c}) {
+//   c();
+//   return (
+//     <>
+//       <div>{a}</div>
+//       <div>{b}</div>
+//     </>
+//   )
+// }
+
+
+// props只能由上到下來傳遞，不能由下到上來傳遞
+// 也就是只能從 父組件 傳遞 props給 子組件，不能從 子組件 傳遞props給 父組件
+// 因為在React中，沒有這種 下傳上 的機制
+
+// props也可以用來傳遞 組件
+function SecondComponent() {
+  return <h1>hello world</h1>
+}
+function MyComponent({children}) {
+  return <>{children}</>
+}
+
+
 
 export default App // 將檔案組件導出去，在main.jsx使用（import App from './App.jsx'）
