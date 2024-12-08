@@ -1,3 +1,5 @@
+根據[2小時React快速入門 - React基礎教學](https://www.youtube.com/watch?v=aBTiZfShe-4&t=1030s)撰寫的ReactJS學習筆記
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
