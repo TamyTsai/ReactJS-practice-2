@@ -37,24 +37,24 @@ function App() {
 
   // 兩個常見的陣列方法：map()、filter()
   // map方法可以讓你將一個陣列，轉換為另一個陣列
-  const listItems = [
-    {content: '張三', id: 'abc'},
-    {content: '李四', id: 'xyz'},
-    {content: '王五', id: 'qaz'},
-  ];
+  // const listItems = [
+  //   {content: '張三', id: 'abc'},
+  //   {content: '李四', id: 'xyz'},
+  //   {content: '王五', id: 'qaz'},
+  // ];
 
   // filter可以讓你過濾陣列
   // 若要過濾 李四
   // filter方法會回傳過濾後的陣列
-  const filterItems = listItems.filter((item) => {
-    if (item.content !== '李四') {
-      return true
-      // 在filter方法邏輯中，若回呼函數回傳true，則 該筆資料 會被 保留下來
-      // 回傳false或 沒有回傳資料 的話，該筆資料就會被剔除
-    }
-  })
+  // const filterItems = listItems.filter((item) => {
+  //   if (item.content !== '李四') {
+  //     return true
+  //     // 在filter方法邏輯中，若回呼函數回傳true，則 該筆資料 會被 保留下來
+  //     // 回傳false或 沒有回傳資料 的話，該筆資料就會被剔除
+  //   }
+  // })
 
-  return (
+  // return (
     // <div>hello world</div> // JSX, JavaScript XML 可以讓你在JavaScript中寫HTML
     // <div><MyComponent></MyComponent></div>
     // react組件 或 HTML元素 本質上都是 JS物件，只不過被 JSX語法 包裹起來
@@ -109,7 +109,7 @@ function App() {
     // </>
     // 空標籤也是JS物件，稱做Fragment
 
-    <>
+    // <>
       {/* 在HTML中，空元素的斜線可有可無，但在JSX中，空元素必須要有斜線 */}
       {/* 所以以下這行會出錯 */}
       {/* <input type="text"> */}
@@ -177,11 +177,11 @@ function App() {
       {/* map方法會回傳一個新陣列 */}
 
       {/* filter可以讓你過濾陣列 */}
-      {filterItems.map((item) => {
+      {/* {filterItems.map((item) => {
         return <div key={item.id}>{item.content}</div>
-      })}
-    </>
-  )
+      })} */}
+    // </>
+  // )
 
   // return旁的 圓括弧 很重要，
   // return
@@ -200,6 +200,69 @@ function App() {
   //   <MyComponent/>
   //   <MyComponent/>
   // </>
+
+  // React中的條件判斷
+  // if (false) {
+  //   return <h1>hello</h1>
+  // } else {
+  //   return <h1>world</h1>
+  // }
+  // 透過if判斷式，就可以根據不同的條件，來給 組件 回傳 不同的 網頁內容
+  // else的關鍵字也可以不用寫出來
+  // 因為當 函數 遇到 return關鍵字時，就會 停止執行 後面的 程式碼
+  // 所以以下兩個return，最後只有一個會被執行，跟if...else...效果相同
+  // if (false) {
+  //   return <h1>hello</h1>
+  // } 
+  //   return <h1>world</h1>
+
+  // 三元運算子 ternary operator
+  // 這是JS本來就有的語法，與React沒有直接關係
+  // return (true? <h1>hello</h1> : <h1>world</h1>)
+  // return (false? <h1>hello</h1> : <h1>world</h1>)
+  // 條件？ 條件為真時回傳的內容：條件為假時回傳的內容
+
+  // 三元運算也可以寫到HTML裡面
+  // return (
+  //   <div className="my-div">
+  //     {false? <h1>hello</h1> : <h1>world</h1>}
+  //   </div>
+  // )
+
+  // 三元運算還有一個更進階的用法，就是用在HTML的className使用
+  // 因為有時想要給HTML切換不同的CSS，就可以在 className 使用 三元運算
+  // return (
+  //   <div className={true? 'a':'b'}>
+  //     {false? <h1>hello</h1> : <h1>world</h1>}
+  //   </div>
+  // )
+  // 如果有多個class想要寫，而有些是固定的class（c），有些是會隨條件是否滿足而變化的class（a、b），可以這樣寫：
+  // return (
+  //   <div className={true? 'a c':'b c'}>
+  //     {false? <h1>hello</h1> : <h1>world</h1>}
+  //   </div>
+  // )
+  // 或是使用「反引號字串」
+  // return (
+  //   <div className={`c ${true? 'a':'b'}`}>
+  //     {false? <h1>hello</h1> : <h1>world</h1>}
+  //   </div>
+  // )
+
+  // 邏輯運算子AND &&
+  return (
+    <div className={`c ${true? 'a':'b'}`}>
+      {true && <h1>hello</h1>}
+      {false && <h1>hello</h1>}
+      {undefined && <h1>hello</h1>}
+      {/* 只有兩邊都是true時，邏輯運算才會是true（狹義說法） */}
+      {/* && 左邊的值 為 真值 時，就會回傳 右邊的值，反之則回傳 左邊的值 */}
+      {/* 但JSX會將false與undefined忽略掉，因此在HTML中不會顯示任何東西 */}
+      {/* 所以可以利用&&邏輯運算，來決定 是否 要展示 某元素 */}
+    </div>
+  )
+
+
 }
 
 // 組件雖然可以些在這裡，但更常見的作法 是將 每個組件 寫成 一個檔案（模組化），透過導出與導入來結合
@@ -208,10 +271,10 @@ function App() {
 //   return <h1>你好</h1>
 // }
 
-function MyComponent() {
-  return <ChildComponent/>
-  // 打子組件名，按下tab，就會自動在檔案最上面引入所需模組（import ChildComponent from "./ChildComponent"）
-  // App（根組件）> MyComponent > ChildComponent
-}
+// function MyComponent() {
+//   return <ChildComponent/>
+//   // 打子組件名，按下tab，就會自動在檔案最上面引入所需模組（import ChildComponent from "./ChildComponent"）
+//   // App（根組件）> MyComponent > ChildComponent
+// }
 
 export default App // 將檔案組件導出去，在main.jsx使用（import App from './App.jsx'）
