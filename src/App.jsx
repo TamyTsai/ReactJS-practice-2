@@ -1,15 +1,31 @@
-import ChildComponent from "./ChildComponent"
+import ChildComponent from "./ChildComponent";
+import './App.css';
 
 // 用函式創建組件
 // 會回傳HTML元素的函式就是組件（會回傳東西的副程式為函數）
 function App() {
+
+  const text = 'hello world';
+  // const handleClick = () => {
+  //   alert('按到了')
+  // };
+  // 也可以將此 回呼函數 寫到 組件 外面，或另一個 檔案 裡
+  // 不過最常見的寫法，還是在 組件 中，直接定義 回呼函數
+
+  // 除了單純執行回呼函數外，瀏覽器 還會把 事件物件（物件內含有 滑鼠座標、點擊的按鈕等等），傳入到 回呼函數 中
+  const handleClick = (e) => {
+    console.log(e);
+  };
+
   return (
     // <div>hello world</div> // JSX, JavaScript XML 可以讓你在JavaScript中寫HTML
     // <div><MyComponent></MyComponent></div>
-    // react組件 或 HTML元素 本質上都是JS物件，只不過被JSX語法包裹起來
-    // 執行時，Vite的編譯工具會將這些JSX語法轉換為JS物件，
+    // react組件 或 HTML元素 本質上都是 JS物件，只不過被 JSX語法 包裹起來
+    // 執行時，Vite的 編譯工具 會將這些 JSX語法 轉換為 JS物件，
     // 之後React會將這些JS物件轉換為HTML元素（ReactDOM.createRoot(document.getElementById('root')).render()）
     // 因此瀏覽器才能顯示
+    // react組件、JSX語法        >         JS物件                                 >                                     HTML元素
+    //                   Vite的 編譯工具          React（ReactDOM.createRoot(document.getElementById('root')).render()）
 
     // 組件不一定要寫成對標籤，可以只寫一個標籤，但要加上斜線，代表關閉標籤，否則會發生語法錯誤
     // <div><MyComponent/></div>
@@ -19,18 +35,117 @@ function App() {
 
     // 可以重複使用組件
     // 網頁上常常會有重複的UI介面，所以就可以透過將其寫到組件裡，降低程式碼的重複性及可維護性
-    <div>
-      <MyComponent/>
-      <MyComponent/>
-      <MyComponent/>
-    </div>
+    // <div>
+    //   <MyComponent/>
+    //   <MyComponent/>
+    //   <MyComponent/>
+    // </div>
 
     // 如果將 一個組件定義 寫進 另一個組件定義 裡（比如將function MyComponent() 寫到 App()中），
     // 雖然不會發生錯誤，但會讓React變得非常慢，還會出現奇怪的bug
     // function MyComponent() {
     //   return <h1>你好</h1>
     // }
+
+    // 每個組件只能回傳一個元素，不能同時回傳多個元素
+    // <MyComponent/>
+    // <MyComponent/>
+    // <MyComponent/>
+    // 以上程式碼會產生 語法錯誤（App函式（組件）return的內容有三個元素）
+
+    // 若要回傳多個元素，要將多個元素包進一個元素中
+    // 會有這樣的規定，並非JSX的關係，而是JS本身的語法限制
+    // 因為這裡的每個HTML元素，都是組件，其實就是JS物件而已
+    // 而在JS中，你不能同時回傳多個物件，只能回傳一個物件
+    // <div>
+    //   <MyComponent/>
+    //   <MyComponent/>
+    //   <MyComponent/>
+    // </div>
+    // 但這裡這個div元素除了 包裹其他元素 外，沒有其他功能，會在HTML中，形成多餘的元素
+    // 所以React允許我們可以只留外殼，就不會有多餘的HTML元素
+    // 所以只是要 包裹其他元素 的話，就用空標籤即可
+    // <>
+    //   <MyComponent/>
+    //   <MyComponent/>
+    //   <MyComponent/>
+    // </>
+    // 空標籤也是JS物件，稱做Fragment
+
+    <>
+      {/* 在HTML中，空元素的斜線可有可無，但在JSX中，空元素必須要有斜線 */}
+      {/* 所以以下這行會出錯 */}
+      {/* <input type="text"> */}
+
+      {/* 要在HTML中寫JS，要加大括弧 */}
+      {/* <h1>{text}</h1> */}
+
+      {/* 不只可以寫變數，還可以寫函數 */}
+      {/* <h1>{text.toUpperCase()}</h1> */}
+
+      {/* 還可以在 元素 屬性的值 中使用JS */}
+      {/* <input type="text" placeholder={text}/> */}
+      {/* 基本上在JSX中，只有 標籤內的內容，與 標籤屬性的值，可以寫JS */}
+      {/* 以下這行會產生語法錯誤（將JS語法寫在 屬性名稱 中） */}
+      {/* <input type="text" {text}={text}/> */}
+      {/* 以下這行也會產生語法錯誤（將JS語法寫在 標籤名稱 中） */}
+      {/* <{text} type="text" placeholder={text}/> */}
+
+      {/* 有些 屬性名稱 在HTML與JSX中不同 */}
+      {/* HTML中的 class，在JSX寫作 className */}
+      {/* <h1 className="h1-tag">{text}</h1> */}
+      {/* 上面這行程式碼的「className」，在HTML會轉為「class」 */}
+      {/* <h1 class="h1-tag">HELLO WORLD</h1> */}
+      {/* 因為「class」在JS中為關鍵字，所以JSX就將class改為className */}
+      {/* 另外因為「for」在JS中也是關鍵字，所以HTML的for屬性，在JSX改寫為「htmlFor」 */}
+      {/* JSX寫HTML屬性名稱時，使用駝峰式命名法（第一個單詞開頭小寫，其他單詞開頭大寫） */}
+
+      {/* 使用雙大括弧的語法，只是在JSX中使用物件 */}
+      {/* 常出現在style屬性中 */}
+      {/* <h1 style={{backgroundColor: 'red'}}>{text}</h1> */}
+      {/* 雙大括弧 非單一語法，而是由兩個語法組成 */}
+      {/* 外層大括弧，表示我們要在JSX中使用JS */}
+      {/* 裡面的大括弧 代表物件 */}
+      {/* 裡面的大括弧 中的 東西，並非真正的CSS語法，是利用 JS物件 來模擬 CSS 的 一種方式 */}
+      {/* 在CSS中，屬性值 不需要像這裡一樣加上引號（''） */}
+      {/* CSS中，屬性名 會用「-」來隔開單詞（background-color），而非像 此處使用 駝峰式命名法 */}
+      {/* CCS寫法：{background-color: red;} */}
+      {/* 直接在HTML裡寫CSS的方式，稱為inline CSS，更常見的方法，是使用獨立的CSS檔案 */}
+      {/* 創建App.css檔案，寫入樣式，然後於此檔頂部引入此模組，即可套用樣式 */}
+      {/* 在正常的JS檔案中，其實是不能導入CSS檔案的 */}
+      {/* 這裡可以這樣做的原因是，Vite會把你所導入的CSS檔案，插入到HTML中，因此你才可以導入CSS */}
+
+      {/* 事件處理 */}
+      {/* <button onClick={()=>{alert('按到了')}}>我是按鈕</button> */}
+      {/* 當用戶點擊按鈕時，執行callback function回呼函數 */}
+      <button onClick={handleClick}>我是按鈕</button>
+      {/* 將回呼函數 寫到 變數 裡，這裡直接寫 變數名，代表函數本體，瀏覽器會等到事件觸發時（用戶Click）時，才呼叫並執行函數 */}
+      {/* 回呼函數 後面如果加了圓括弧，就會變成主動執行，變成用戶還沒Click就執行了 */}
+      {/* 這是JS本身的特性，與React無關 */}
+      {/* <button onClick={handleClick()}>我是按鈕</button> */}
+
+      {/* 除了單純執行回呼函數外，瀏覽器 還會把 事件物件，傳入到 回呼函數 中 */}
+
+    </>
   )
+
+  // return旁的 圓括弧 很重要，
+  // return
+  //   <>
+  //     <MyComponent/>
+  //     <MyComponent/>
+  //     <MyComponent/>
+  //   </>
+  // 如果沒了圓括弧，return底下的程式碼不會被執行
+  // 因為單獨一行的return關鍵字是有意義的，代表 讓函數 停止執行，所以return下面的程式碼不會被執行
+  // 此為JS的語法特性，與React無關
+
+  // 如果不用圓括弧，那就把標籤寫在return旁邊，就能回傳
+  // return <>
+  //   <MyComponent/>
+  //   <MyComponent/>
+  //   <MyComponent/>
+  // </>
 }
 
 // 組件雖然可以些在這裡，但更常見的作法 是將 每個組件 寫成 一個檔案（模組化），透過導出與導入來結合
@@ -42,6 +157,7 @@ function App() {
 function MyComponent() {
   return <ChildComponent/>
   // 打子組件名，按下tab，就會自動在檔案最上面引入所需模組（import ChildComponent from "./ChildComponent"）
+  // App（根組件）> MyComponent > ChildComponent
 }
 
 export default App // 將檔案組件導出去，在main.jsx使用（import App from './App.jsx'）
