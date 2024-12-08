@@ -5,7 +5,8 @@ import './App.css';
 // 會回傳HTML元素的函式就是組件（會回傳東西的副程式為函數）
 function App() {
 
-  const text = 'hello world';
+  // const text = 'hello world';
+
   // const handleClick = () => {
   //   alert('按到了')
   // };
@@ -13,9 +14,45 @@ function App() {
   // 不過最常見的寫法，還是在 組件 中，直接定義 回呼函數
 
   // 除了單純執行回呼函數外，瀏覽器 還會把 事件物件（物件內含有 滑鼠座標、點擊的按鈕等等），傳入到 回呼函數 中
-  const handleClick = (e) => {
-    console.log(e);
-  };
+  // const handleClick = (e) => {
+  //   console.log(e);
+  // };
+
+  // JSX中的陣列
+  // const listItems = [
+  //   <MyComponent/>,
+  //   <MyComponent/>,
+  //   <MyComponent/>,
+  // ]
+  // 可以在 JSX檔案 的其他地方寫 HTML，不一定要 寫在 return 的 後面
+  // 因為到頭來，這裡的 組件 或 元素，也只是JS物件而已，所以可寫在任何地方
+  // 瀏覽器警告：標籤中的每個內容應該要有key屬性（警告表示程式存在潛藏的問題，但仍然可以執行，只是放著不管，之後可能會演變成錯誤）
+  // const listItems = [
+  //   <MyComponent key="0"/>,
+  //   <MyComponent key="1"/>,
+  //   <MyComponent key="2"/>,
+  // ]
+  // 每個元素 的 key屬性的值 都要 不同
+  // key屬性的用途 是 讓 React可以 精準定位 陣列中 每個 元素，進而提昇 渲染效率
+
+  // 兩個常見的陣列方法：map()、filter()
+  // map方法可以讓你將一個陣列，轉換為另一個陣列
+  const listItems = [
+    {content: '張三', id: 'abc'},
+    {content: '李四', id: 'xyz'},
+    {content: '王五', id: 'qaz'},
+  ];
+
+  // filter可以讓你過濾陣列
+  // 若要過濾 李四
+  // filter方法會回傳過濾後的陣列
+  const filterItems = listItems.filter((item) => {
+    if (item.content !== '李四') {
+      return true
+      // 在filter方法邏輯中，若回呼函數回傳true，則 該筆資料 會被 保留下來
+      // 回傳false或 沒有回傳資料 的話，該筆資料就會被剔除
+    }
+  })
 
   return (
     // <div>hello world</div> // JSX, JavaScript XML 可以讓你在JavaScript中寫HTML
@@ -118,7 +155,7 @@ function App() {
       {/* 事件處理 */}
       {/* <button onClick={()=>{alert('按到了')}}>我是按鈕</button> */}
       {/* 當用戶點擊按鈕時，執行callback function回呼函數 */}
-      <button onClick={handleClick}>我是按鈕</button>
+      {/* <button onClick={handleClick}>我是按鈕</button> */}
       {/* 將回呼函數 寫到 變數 裡，這裡直接寫 變數名，代表函數本體，瀏覽器會等到事件觸發時（用戶Click）時，才呼叫並執行函數 */}
       {/* 回呼函數 後面如果加了圓括弧，就會變成主動執行，變成用戶還沒Click就執行了 */}
       {/* 這是JS本身的特性，與React無關 */}
@@ -126,6 +163,23 @@ function App() {
 
       {/* 除了單純執行回呼函數外，瀏覽器 還會把 事件物件，傳入到 回呼函數 中 */}
 
+      {/* JSX中的陣列 */}
+      {/* {listItems} */}
+      {/* 在JSX中放入陣列，React也可以將其變成HTML */}
+
+      {/* 兩個常見的陣列方法：map()、filter() */}
+      {/* map方法可以讓你將一個陣列，轉換為另一個陣列 */}
+      {/* {listItems.map((item) => {
+        return <div key={item.id}>{item.content}</div>
+      })} */}
+      {/* item代表 陣列中 的 每個單一元素，也可以取成 其他名字 */}
+      {/* map方法 會給 陣列中的每一筆資料 作循環，item參數就是每一次循環的資料，也就是陣列中的每一筆物件 */}
+      {/* map方法會回傳一個新陣列 */}
+
+      {/* filter可以讓你過濾陣列 */}
+      {filterItems.map((item) => {
+        return <div key={item.id}>{item.content}</div>
+      })}
     </>
   )
 
