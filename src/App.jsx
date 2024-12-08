@@ -1,5 +1,6 @@
 import ChildComponent from "./ChildComponent";
 import './App.css';
+import { useState } from "react";
 
 // 用函式創建組件
 // 會回傳HTML元素的函式就是組件（會回傳東西的副程式為函數）
@@ -301,6 +302,18 @@ function App() {
   // 但不一定要使用「children」才能傳遞 組件
   // 也可以使用任意 屬性名，因為 組件 其實就是 JS物件 而已，所以可以用 一般方式 傳遞 其
 
+  // state 狀態
+  // 不同組件間的state是互相獨立的
+  // 每個組件只會依據自己的state來做更新，不會互相影響
+  // 還可以將state傳遞給 子元素
+  // 讓 子元素 也可以根據state變化 來做更新
+  return (
+    <>
+      <MyComponent/>
+      <MyComponent/>
+      <MyComponent/>
+    </>
+  )
 
 }
 
@@ -382,11 +395,69 @@ function App() {
 // 因為在React中，沒有這種 下傳上 的機制
 
 // props也可以用來傳遞 組件
-function SecondComponent() {
-  return <h1>hello world</h1>
+// function SecondComponent() {
+//   return <h1>hello world</h1>
+// }
+// function MyComponent({children}) {
+//   return <>{children}</>
+// }
+
+// state 狀態
+// 在React中，通常會將資料 存在 state 中，就像一般我們將資料存在 變數 一樣
+// function MyComponent() {
+//   let clicks = 0;
+//   const handleClick = () => {
+//     clicks++;
+//     console.log(clicks);
+//   };
+//   return (
+//     <>
+//       <button onClick={handleClick}>點擊次數：{clicks}</button>
+//     </>
+//   );
+// }
+// 上面的寫法，當使用者點擊按鈕時，雖然 clicks 變數的值 實際上有增加，但畫面上顯示的clicks還是0
+// 因為沒有寫程式碼來將HTML重印一次，所以畫面上顯示的clicks還是0
+// 此時可以將 資料儲存於state中，當資料內容發生改變時，React就會更新HTML元素
+// function MyComponent() {
+//   // useState(0); // useState函式需要傳入參數，即初始值（字串、數字、陣列、物件...）
+//   // useState會回傳一個陣列，陣列中存放：state的內容 及 用來更改state內容的函數名稱
+//   // 所以我們用 解構賦值 來存取陣列中的內容（名字不重要，順序很重要（因為其是以順序來取得 陣列 資料））
+//   // 不過 函數名稱 慣例上 以set開頭
+//   const [clicks, setClicks] = useState(0);
+//   const handleClick = () => {
+//     setClicks(clicks + 1);
+//     console.log(clicks);
+//   };
+//   return (
+//     <>
+//       <button onClick={handleClick}>點擊次數：{clicks}</button>
+//     </>
+//   );
+// }
+// JSX變成HTML元素的過程 就叫 渲染
+// 網頁初次載入時，會執行初次渲染
+// 當點擊按鈕，呼叫setClicks函式時，React察覺到state改變，所以進行 重新渲染 HTML元素
+// 不同組件間的state是互相獨立的
+
+// 還可以將state傳遞給 子元素
+// 讓 子元素 也可以根據state變化 來做更新
+function ChildComponent2({clicks}) {
+  return <div>{clicks}</div>
 }
-function MyComponent({children}) {
-  return <>{children}</>
+function MyComponent() {
+  const [clicks, setClicks] = useState(0);
+  const handleClick = () => {
+    setClicks(clicks + 1);
+    console.log(clicks);
+  };
+  return (
+    <>
+      <button onClick={handleClick}>點擊次數：{clicks}</button>
+      <ChildComponent2 clicks={clicks}/>
+      {/* 屬性名可以任意取，但慣例上使用相同的名字 */}
+    </>
+  );
 }
 
 
